@@ -5,6 +5,7 @@
 
 # Dependencies
 /node_modules
+/fakeData
 
 # User-specific files
 *.rsuser

@@ -9,7 +9,6 @@ CREATE TABLE IF NOT EXISTS products (
   product_description TEXT,
   category TEXT,
   default_price TEXT,
-  feature_id INTEGER FOREIGN KEY REFERENCES product_features(feature_id),
 )
 
 CREATE TABLE IF NOT EXISTS product_features (
@@ -34,8 +33,7 @@ CREATE TABLE IF NOT EXISTS styles (
   style_name TEXT,
   original_price TEXT,
   sale_price TEXT,
-  default_style INTEGER,
-  sku_id INTEGER FOREIGN KEY REFERENCES skus(sku_id)
+  default? INTEGER,
 )
 
 CREATE TABLE IF NOT EXISTS skus (

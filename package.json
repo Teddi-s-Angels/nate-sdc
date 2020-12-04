@@ -22,6 +22,8 @@
   "dependencies": {
     "bootstrap": "^4.5.3",
     "express": "^4.17.1",
+    "faker": "^5.1.0",
+    "fs": "0.0.1-security",
     "glyphicons": "^0.2.0",
     "nodemon": "^2.0.6",
     "postgres": "^1.0.2",
