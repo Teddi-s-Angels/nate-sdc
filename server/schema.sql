@@ -1,4 +1,4 @@
-CREATE DATABASE product_detail
+CREATE DATABASE IF NOT EXISTS product_detail
 
 USE product_detail
 
@@ -23,16 +23,8 @@ CREATE TABLE IF NOT EXISTS product_photos (
   photo_id INTEGER AUTO_INCREMENT UNIQUE PRIMARY KEY,
   product_id INTEGER FOREIGN KEY REFERENCES products(product_id),
   style_id INTEGER FOREIGN KEY REFERENCES styles(style_id),
-  thumbnail_url_1 TEXT,
-  photo_url_1 TEXT,
-  thumbnail_url_2 TEXT,
-  photo_url_2 TEXT,
-  thumbnail_url_3 TEXT,
-  photo_url_3 TEXT,
-  thumbnail_url_4 TEXT,
-  photo_url_4 TEXT,
-  thumbnail_url_5 TEXT,
-  photo_url_5 TEXT,
+  thumbnail_url TEXT,
+  photo_url TEXT,
 )
 
 CREATE TABLE IF NOT EXISTS styles (
