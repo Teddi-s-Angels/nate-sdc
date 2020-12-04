@@ -7,6 +7,7 @@ let featureString = '';
 let photoString = '';
 let cartString = '';
 let ratingString = '';
+let styleString = '';
 
 //Products
 
@@ -38,6 +39,25 @@ for(var i = 1; i <= productCount * 3; i++) {
 }
 
 fs.writeFile('./fakeFeatureData.csv', featureString, (err) => {
+  if(err) {
+    console.log(err)
+  } else {
+    console.log(`successfully generated fake product feature data`)
+  }
+})
+
+//Product Styles
+
+for(var i = 1; i <= productCount * 3; i++) {
+  let id = Math.ceil(Math.random() * productCount + 1);
+  let productId = Math.ceil(Math.random() * productCount + 1);
+  let name = faker.commerce.productName();
+  let originalPrice = faker.commerce.price();
+  let salePrice = faker.commerce.price();
+  let default =  Math.floor(Math.random() * 2);
+  styleString += `${id}, ${productId}, ${name}, ${originalPrice}, ${salePrice}, ${default} \n`
+}
+fs.writeFile('./fakeStyleData.csv', styleString, (err) => {
   if(err) {
     console.log(err)
   } else {
@@ -77,7 +97,7 @@ fs.writeFile('./fakeCartData.csv', cartString, (err) => {
   if(err) {
     console.log(err)
   } else {
-    console.log(`successfully generated fake product data`)
+    console.log(`successfully generated fake cart data`)
   }
 })
 
@@ -98,7 +118,7 @@ fs.writeFile('./fakeRatingData.csv', ratingString, (err) => {
   if(err) {
     console.log(err)
   } else {
-    console.log(`successfully generated fake product data`)
+    console.log(`successfully generated fake rating data`)
   }
 })
 
