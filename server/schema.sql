@@ -2,44 +2,53 @@ CREATE DATABASE product_detail
 
 USE product_detail
 
-CREATE TABLE IF NOT EXISTS product (
+CREATE TABLE IF NOT EXISTS products (
   product_id INTEGER AUTO_INCREMENT UNIQUE PRIMARY KEY,
   product_name TEXT,
   slogan TEXT,
   product_description TEXT,
   category TEXT,
   default_price TEXT,
-  feature_id INTEGER FOREIGN KEY REFERENCES product_feature(feature_id),
+  feature_id INTEGER FOREIGN KEY REFERENCES product_features(feature_id),
 )
 
-CREATE TABLE IF NOT EXISTS product_feature (
+CREATE TABLE IF NOT EXISTS product_features (
   feature_id INTEGER AUTO_INCREMENT UNIQUE PRIMARY KEY,
-  product_id INTEGER FOREIGN KEY REFERENCES product(product_id),
+  product_id INTEGER FOREIGN KEY REFERENCES products(product_id),
   feature TEXT,
   feature_value TEXT
 )
 
-CREATE TABLE IF NOT EXISTS product_photo (
+CREATE TABLE IF NOT EXISTS product_photos (
   photo_id INTEGER AUTO_INCREMENT UNIQUE PRIMARY KEY,
-  product_id INTEGER FOREIGN KEY REFERENCES product(product_id),
-  thumbnail_url TEXT,
-  photo_url TEXT
+  product_id INTEGER FOREIGN KEY REFERENCES products(product_id),
+  style_id INTEGER FOREIGN KEY REFERENCES styles(style_id),
+  thumbnail_url_1 TEXT,
+  photo_url_1 TEXT,
+  thumbnail_url_2 TEXT,
+  photo_url_2 TEXT,
+  thumbnail_url_3 TEXT,
+  photo_url_3 TEXT,
+  thumbnail_url_4 TEXT,
+  photo_url_4 TEXT,
+  thumbnail_url_5 TEXT,
+  photo_url_5 TEXT,
 )
 
-CREATE TABLE IF NOT EXISTS style (
+CREATE TABLE IF NOT EXISTS styles (
   style_id INTEGER AUTO_INCREMENT UNIQUE PRIMARY KEY,
-  product_id INTEGER FOREIGN KEY REFERENCES product(product_id),
+  product_id INTEGER FOREIGN KEY REFERENCES products(product_id),
   product_style_id INTEGER,
   style_name TEXT,
   original_price TEXT,
   sale_price TEXT,
   default_style INTEGER,
-  sku_id INTEGER FOREIGN KEY REFERENCES sku(sku_id)
+  sku_id INTEGER FOREIGN KEY REFERENCES skus(sku_id)
 )
 
-CREATE TABLE IF NOT EXISTS sku (
+CREATE TABLE IF NOT EXISTS skus (
   sku_id INTEGER AUTO_INCREMENT UNIQUE PRIMARY KEY,
-  style_id INTEGER FOREIGN KEY REFERENCES style(style_id),
+  style_id INTEGER FOREIGN KEY REFERENCES styles(style_id),
   XS INTEGER,
   S INTEGER, 
   M INTEGER,
@@ -50,7 +59,7 @@ CREATE TABLE IF NOT EXISTS sku (
 
 CREATE TABLE IF NOT EXISTS product_rating_meta (
   meta_id INTEGER AUTO_INCREMENT UNIQUE PRIMARY KEY,
-  product_id INTEGER FOREIGN KEY REFERENCES product(product_id),
+  product_id INTEGER FOREIGN KEY REFERENCES products(product_id),
   one_star INTEGER, 
   two_star INTEGER, 
   three_star INTEGER, 
@@ -61,6 +70,6 @@ CREATE TABLE IF NOT EXISTS product_rating_meta (
 CREATE TABLE IF NOT EXISTS cart (
   cart_id INTEGER AUTO_INCREMENT UNIQUE PRIMARY KEY,
   user_session INTEGER,
-  product_id INTEGER FOREIGN KEY REFERENCES product(product_id),
+  product_id INTEGER FOREIGN KEY REFERENCES products(product_id),
   active BOOLEAN
 )
