@@ -3,7 +3,7 @@ CREATE DATABASE IF NOT EXISTS product_detail
 USE product_detail
 
 CREATE TABLE IF NOT EXISTS products (
-  product_id INTEGER AUTO_INCREMENT UNIQUE PRIMARY KEY,
+  product_id INTEGER PRIMARY KEY,
   product_name TEXT,
   slogan TEXT,
   product_description TEXT,
@@ -21,7 +21,6 @@ CREATE TABLE IF NOT EXISTS product_features (
 CREATE TABLE IF NOT EXISTS product_photos (
   photo_id INTEGER AUTO_INCREMENT UNIQUE PRIMARY KEY,
   product_id INTEGER FOREIGN KEY REFERENCES products(product_id),
-  style_id INTEGER FOREIGN KEY REFERENCES styles(style_id),
   thumbnail_url TEXT,
   photo_url TEXT,
 )
@@ -38,6 +37,7 @@ CREATE TABLE IF NOT EXISTS styles (
 
 CREATE TABLE IF NOT EXISTS skus (
   sku_id INTEGER AUTO_INCREMENT UNIQUE PRIMARY KEY,
+  product_id INTEGER FOREIGN KEY REFERENCES products(product_id),
   style_id INTEGER FOREIGN KEY REFERENCES styles(style_id),
   size TEXT,
   quantity INTEGER,
