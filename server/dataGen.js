@@ -3,43 +3,35 @@ const faker = require('faker')
 
 let startTime = Date.now()
 
-let productCount = 1000001;
-let productString = 'product_id, product_name, slogan, product_description, category, default_price \n';
-let featureString = 'product_id, feature, feature_value \n';
-let photoString = 'product_id, thumbnail_url, photo_url \n';
-let cartString = 'user_session, product_id, active \n';
-let ratingString = 'product_id, one_star, two_star, three_star, four_star, five_star \n';
-let styleString = 'product_id, product_style_id, style_name, original_price, sale_price, default?';
-let skuString = 'product_id, style_id, size, quantity';
+let productCount = 2500000;
+let productString = '';
+let featureString = '';
+let photoString = '';
+let cartString = '';
+let ratingString = '';
+let styleString = '';
+let skuString = '';
 
 //Products + Features
 
 for(let i = 1; i <= productCount; i++) {
+  let productId = i + 7500000;
   let id = i;
   let name = faker.commerce.productName();
-  let slogan = faker.lorem.sentence()
-  let description = faker.commerce.productDescription();
+  let slogan = faker.lorem.sentence();
+  let description = faker.lorem.paragraph();
   let category = faker.commerce.department();
   let defaultPrice = faker.commerce.price();
-  let numberOfFeatures = Math.ceil(Math.random() * 3)
-  let productId = i;
+  let numberOfFeatures = Math.ceil(Math.random() * 3);
   for(let j = 1; j <= numberOfFeatures; j++) {
     let feature = faker.commerce.productMaterial();
     let value = faker.commerce.productAdjective();
-    featureString += `${productId}, ${feature}, ${value} \n`
+    featureString += `${productId}, ${feature}, ${value} \n`;
   }
-  productString += `${productId}, ${name}, ${slogan}, ${description}, ${category}, ${defaultPrice.toString()} \n`
+  productString += `${productId}, ${name}, ${slogan}, ${description}, ${category}, ${defaultPrice.toString()} \n`;
 }
 
-fs.writeFile('./fakeData/fakeProductData.csv', productString, (err) => {
-  if(err) {
-    console.log(err)
-  } else {
-    console.log(`successfully generated fake product data`)
-  }
-})
-
-fs.writeFile('./fakeData/fakeFeatureData.csv', featureString, (err) => {
+fs.appendFile('./fakeData/fakeFeatureData.csv', featureString, (err) => {
   if(err) {
     console.log(err)
   } else {
@@ -47,11 +39,19 @@ fs.writeFile('./fakeData/fakeFeatureData.csv', featureString, (err) => {
   }
 })
 
-//Product Styles
+fs.appendFile('./fakeData/fakeProductData.csv', productString, (err) => {
+  if(err) {
+    console.log(err)
+  } else {
+    console.log(`successfully generated fake product data`)
+  }
+})
+
+// Product Styles
 for(let i = 1; i <= productCount; i++) {
   let numberOfStyles = Math.ceil(Math.random() * 2)
   let isDefault =  1
-  let productId = i
+  let productId = i + 7500000
   // style information
   for(let j = 1; j <= numberOfStyles; j++) {
     let name = faker.commerce.productName();
@@ -60,18 +60,17 @@ for(let i = 1; i <= productCount; i++) {
     if(salePrice > originalPrice) {
       salePrice = originalPrice / 2;
     }
-    styleString += `${i + j - 1} ${productId}, ${j} ${name}, ${originalPrice}, ${salePrice}, ${isDefault} \n`;
+    styleString += `${productId}, ${j}, ${name}, ${originalPrice}, ${salePrice}, ${isDefault} \n`;
     isDefault = 0;
-
-    //style photos
+    // style photos
     let photoCount = Math.ceil(Math.random() * 3);
     for(let k = 1; k <= photoCount; k++) {
       let thumbnail_url = faker.image.imageUrl();
       let photo_url = thumbnail_url
-      photoString += `${productId}, ${thumbnail_url}, ${thumbnail_url} \n`
+      photoString += `${productId}, ${thumbnail_url}, ${thumbnail_url}, ${j} \n`
     }
     
-    //style sku
+    // style sku
     let type = Math.ceil(Math.random() * 2);
     let count = Math.ceil(Math.random() * 4);
     let shirt = ['XS', 'S', 'M', 'L', 'XL', 'XXL']
@@ -91,7 +90,7 @@ for(let i = 1; i <= productCount; i++) {
     }
   }
 }
-fs.writeFile('./fakeData/fakeStyleData.csv', styleString, (err) => {
+fs.appendFile('./fakeData/fakeStyleData.csv', styleString, (err) => {
   if(err) {
     console.log(err)
   } else {
@@ -99,32 +98,15 @@ fs.writeFile('./fakeData/fakeStyleData.csv', styleString, (err) => {
   }
 })
 
-//Product Skus
-// var skus = function() {
-//   let shirt = ['XS', 'S', 'M', 'L', 'XL', 'XXL']
-//   let shoes = ['5', '6', '7', '8', '9', '10', '11', '12', '13']
-//   for(var i = 1; i <= productCount; i++) {
-//     let type = Math.ceil(Math.random() * 2);
-//     let count = Math.ceil(Math.random() * 4);
-//     for(var j = 1; j < count; j++) {
-//       let productId = i;
-//       if(type === 1) {
-//         for(var k = 0; k < shirt.length; k++) {
-//           let quantity = Math.floor(Math.random() * 100);
-//           skuString += `${productId}, ${k + 1}, ${shirt[k]}, ${quantity} \n`
-//         }
-//       } else {
-//         for(var n = 0; n < shoes.length; n++) {
-//           let quantity = Math.floor(Math.random() * 100);
-//           skuString += `${productId}, ${n + 1}, ${shoes[n]}, ${quantity} \n`
-//         }
-//       }
-//     }
-//   }
-// }
-// skus()
+fs.writeFile('./fakeData/fakeFeatureData.csv', featureString, (err) => {
+  if(err) {
+    console.log(err)
+  } else {
+    console.log(`successfully generated fake product feature data`)
+  }
+})
 
-fs.writeFile('./fakeData/fakeSkuData.csv', skuString, (err) => {
+fs.appendFile('./fakeData/fakeSkuData.csv', skuString, (err) => {
   if(err) {
     console.log(err)
   } else {
@@ -132,36 +114,17 @@ fs.writeFile('./fakeData/fakeSkuData.csv', skuString, (err) => {
   }
 })
 
-//Product Photos
-
-// for(var i = 1; i <= productCount * 3; i++) {
-//   let id = i;
-//   let productId = Math.ceil(Math.random() * productCount + 1);
-//   let thumbnail_url = faker.image.imageUrl();
-//   let photo_url = thumbnail_url
-//   photoString += `${id}, ${productId}, ${thumbnail_url}, ${photo_url} \n`
-// }
-
-fs.writeFile('./fakeData/fakePhotoData.csv', photoString, (err) => {
-  if(err) {
-    console.log(err)
-  } else {
-    console.log(`successfully generated fake photo data`)
-  }
-
-})
-
 //Cart Data
 
 for(let i = 1; i <= productCount; i++) {
-  let id = i;
-  let user = Math.ceil(Math.random() * productCount + 1);
-  let productId = Math.ceil(Math.random() * productCount + 1);
+  let id = i + 9000001;
+  let user = Math.ceil(Math.random() * (productCount+id));
+  let productId = Math.ceil(Math.random() * (productCount+id));
   let active = Math.floor(Math.random() * 2);
   cartString += `${id}, ${user}, ${productId}, ${active} \n`
 }
 
-fs.writeFile('./fakeData/fakeCartData.csv', cartString, (err) => {
+fs.appendFile('./fakeData/fakeCartData.csv', cartString, (err) => {
   if(err) {
     console.log(err)
   } else {
@@ -169,10 +132,10 @@ fs.writeFile('./fakeData/fakeCartData.csv', cartString, (err) => {
   }
 })
 
-//Star Ratings
+// Star Ratings
 
 for(let i = 1; i <= productCount; i++) {
-  let productId = i
+  let productId = i + 5000000;
   let oneStar = Math.floor(Math.random() * 100);
   let twoStar = Math.floor(Math.random() * 100);
   let threeStar = Math.floor(Math.random() * 100);
@@ -181,7 +144,7 @@ for(let i = 1; i <= productCount; i++) {
   ratingString += `${productId}, ${oneStar}, ${twoStar}, ${threeStar}, ${fourStar}, ${fiveStar} \n`
 }
 
-fs.writeFile('./fakeData/fakeRatingData.csv', ratingString, (err) => {
+fs.appendFile('./fakeData/fakeRatingData.csv', ratingString, (err) => {
   if(err) {
     console.log(err)
   } else {
@@ -192,6 +155,17 @@ fs.writeFile('./fakeData/fakeRatingData.csv', ratingString, (err) => {
     console.log(passed_time)
   }, 1)
 })
+
+
+// Headers
+
+// let productString = 'product_id, product_name, slogan, product_description, category, default_price \n';
+// let featureString = 'feature_id, product_id, feature, feature_value \n';
+// let photoString = 'photo_id, product_id, thumbnail_url, photo_url \n';
+// let cartString = 'cart_id, user_session, product_id, active \n';
+// let ratingString = 'meta_id, product_id, one_star, two_star, three_star, four_star, five_star \n';
+// let styleString = 'product_id, product_style_id, style_name, original_price, sale_price, isdefault \n';
+// let skuString = 'sku_id, product_id, style_id, size, quantity \n';
 
 
 
