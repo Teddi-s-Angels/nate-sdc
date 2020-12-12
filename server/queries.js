@@ -1,16 +1,17 @@
-const postgres = require('postgres')
-const connection = postgres.createConnection({
+const {Client} = require('pg')
+const db = new Client({
   host: 'localhost',
-  user: 'root',
-  password: flower11,
-  database: product_detail
+  user: 'postgres',
+  password: 'flower11',
+  database: 'product_detail',
+  port: 1111
 });
 
-connection.connect();
+db.connect();
 
 const getProductList = function(limit, cb) {
 
-  connection.query(`SELECT * FROM products LIMIT ${limit}`, (err, results) => {
+  db.query(`SELECT * FROM products LIMIT ${limit}`, (err, results) => {
     if(err) {
       cb(err, null)
     } else {
@@ -20,7 +21,7 @@ const getProductList = function(limit, cb) {
 }
 
 const getOneProduct = function(product_id, cb) {
-  connection.query(`SELECT * FROM products WHERE product_id = ${product_id}`, (err, results) => {
+  db.query(`SELECT * FROM products WHERE product_id = ${product_id}`, (err, results) => {
     if(err) {
       cb(err, null)
     } else {
@@ -30,7 +31,7 @@ const getOneProduct = function(product_id, cb) {
 }
 
 const getOneProductsFeatures = function(product_id, cb) {
-  connection.query(`SELECT feature, feature_value FROM product_features WHERE product_id = ${product_id}`, (err, results) => {
+  db.query(`SELECT feature, feature_value FROM product_features WHERE product_id = ${product_id}`, (err, results) => {
     if(err) {
       cb(err, null)
     } else {
@@ -40,7 +41,7 @@ const getOneProductsFeatures = function(product_id, cb) {
 }
 
 const getProductStyles = function(product_id, cb) {
-  connection.query(`SELECT * FROM styles WHERE product_id = ${product_id}`, (err, results) => {
+  db.query(`SELECT * FROM styles WHERE product_id = ${product_id}`, (err, results) => {
     if(err) {
       cb(err, null)
     } else {
@@ -50,7 +51,7 @@ const getProductStyles = function(product_id, cb) {
 }
 
 const getProductStylePhotos = function(product_id, cb) {
-  connection.query(`SELECT thumbnail_url, photo_url FROM product_photos WHERE product_id = ${product_id}`, (err, results) => {
+  db.query(`SELECT style_id, thumbnail_url, photo_url FROM product_photos WHERE product_id = ${product_id}`, (err, results) => {
     if(err) {
       cb(err, null)
     } else {
@@ -60,7 +61,7 @@ const getProductStylePhotos = function(product_id, cb) {
 }
 
 const getProductStyleSkus = function(product_id, cb) {
-  connection.query(`SELECT style_id, size, quantity FROM skus WHERE product_id = ${product_id}`, (err, results) => {
+  db.query(`SELECT style_id, size, quantity FROM skus WHERE product_id = ${product_id}`, (err, results) => {
     if(err) {
       cb(err, null)
     } else {
@@ -70,7 +71,7 @@ const getProductStyleSkus = function(product_id, cb) {
 }
 
 const getCart = function(userSession, cb) {
-  connection.query(`SELECT * FROM cart WHERE user_session = ${userSession}`, (err, results) => {
+  db.query(`SELECT * FROM cart WHERE user_session = ${userSession}`, (err, results) => {
     if(err) {
       cb(err, null)
     } else {
@@ -80,7 +81,7 @@ const getCart = function(userSession, cb) {
 }
 
 const getProductMeta = function(id, cb) {
-  connection.query(`SELECT one_star, two_star, three_star, four_star, five_star FROM product_rating_meta WHERE product_id = ${id}`, (err, results) => {
+  db.query(`SELECT one_star, two_star, three_star, four_star, five_star FROM product_rating_meta WHERE product_id = ${id}`, (err, results) => {
     if(err) {
       cb(err, null)
     } else {

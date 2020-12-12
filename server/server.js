@@ -1,7 +1,7 @@
 // server.jsx
 const express = require('express');
 const app = express();
-const query = require('/query.js');
+const query = require("./queries");
 const PORT = 3002;
 
 app.use(express.static('../client/dist')); // Host your dist folder up to the server
@@ -9,58 +9,90 @@ app.use(express.json()); // Alternative to BodyParser
 
 app.get('/products/list/:limit', (req, res) => {
   const limit = req.params.limit || 5;
-	query.getProductList(limit, page, (err, result) => {
+	query.getProductList(limit, (err, result) => {
     if(err) {
       res.send(err)
     } else {
-      res.status(200).send(result)
+      res.status(200).send(result.rows)
     }  
   })
 });
 
 app.get('/products/:product_id', (req, res) => {
   const id = req.params.product_id;
-  const productResult;
+  let productResult = {};
 	query.getOneProduct(id, (err, result) => {
     if(err) {
       res.send(err)
     } else {
-      productResult = result
+      productResult = result.rows[0];
     }  
   })
   query.getOneProductsFeatures(id, (err, result) => {
     if(err) {
       res.send(err)
     } else {
-      productResult['features'] = result
+      productResult['features'] = result.rows
       res.status(200).send(productResult)
-    }  
+    } 
   })
-
 });
 
 app.get('/products/:product_id/styles', (req, res) => {
-  let combinedresult;
+  let combinedResult;
+  let styleOnePictures = [];
+  let styleTwoPictures = [];
+  let styleOneSkus = {};
+  let styleTwoSkus = {};
   const product_id = req.params.product_id;
 	query.getProductStyles(product_id, (err, result) => {
     if(err) {
       res.send(err)
     } else {
-      res.status(200).send(result)
+      combinedResult = result.rows
     }  
   })
   query.getProductStylePhotos(product_id, (err, result) => {
     if(err) {
       res.send(err)
     } else {
-      res.status(200).send(result)
-    }  
+      result.rows.map((row) => {
+        console.log(row)
+        console.log('-')
+        if(row.style_id === '1') {
+          delete row.style_id
+          styleOnePictures.push(row)
+        } else if(row.style_id = '2') {
+          delete row.style_id
+          styleTwoPictures.push(row)
+        }
+      })
+      if(styleOnePictures) {
+        combinedResult[0]['photos'] = styleOnePictures
+      }
+      if(styleTwoPictures.length) {
+        combinedResult[1]['photos'] = styleTwoPictures
+      }
+    }
   })
   query.getProductStyleSkus(product_id, (err, result) => {
     if(err) {
       res.send(err)
     } else {
-      res.status(200).send(result)
+      result.rows.map((row) => {
+        console.log(row)
+        if(row.style_id === 1) {
+          delete row.style_id
+          styleOneSkus[row.size] = row.quantity
+        } else if(row.style_id = 2) {
+          delete row.style_id
+          styleTwoSkus[row.size] = row.quantity
+        }
+      })
+      combinedResult[0]['skus'] = styleOneSkus
+      combinedResult[1]['skus'] = styleTwoSkus
+      res.status(200).send(combinedResult)
+      // res.status(200).send(result.rows)
     }  
   })
 });
@@ -71,7 +103,7 @@ app.get('/cart/:user_session', (req, res) => {
     if(err) {
       res.send(err)
     } else {
-      res.status(200).send(result)
+      res.status(200).send(result.rows[0])
     }  
   })
 });
@@ -94,7 +126,13 @@ app.get('/reviews/:product_id/meta', (req, res) => {
     if(err) {
       res.send(err)
     } else {
-      res.status(200).send(result)
+      let final = {'product_id': req.params.product_id, 'ratings':{}}
+      final['ratings'][1] = result.rows[0]['one_star']
+      final['ratings'][2] = result.rows[0]['two_star']
+      final['ratings'][3] = result.rows[0]['three_star']
+      final['ratings'][4] = result.rows[0]['four_star']
+      final ['ratings'][5] = result.rows[0]['five_star']
+      res.status(200).send(final)
     }  
   })
 });

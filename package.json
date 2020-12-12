@@ -26,6 +26,7 @@
     "fs": "0.0.1-security",
     "glyphicons": "^0.2.0",
     "nodemon": "^2.0.6",
+    "pg": "^8.5.1",
     "postgres": "^1.0.2",
     "psql": "0.0.1",
     "react": "^17.0.1",
