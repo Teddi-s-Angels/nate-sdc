@@ -3,6 +3,7 @@ const express = require('express');
 const app = express();
 const query = require("./queries");
 const PORT = 3002;
+require('newrelic');
 
 app.use(express.static('../client/dist')); // Host your dist folder up to the server
 app.use(express.json()); // Alternative to BodyParser
@@ -89,8 +90,14 @@ app.get('/products/:product_id/styles', (req, res) => {
           styleTwoSkus[row.size] = row.quantity
         }
       })
-      combinedResult[0]['skus'] = styleOneSkus
-      combinedResult[1]['skus'] = styleTwoSkus
+      if(combinedResult[0]) {
+        combinedResult[0]['skus']
+        combinedResult[0]['skus'] = styleOneSkus
+      }
+
+      if(combinedResult[1]) {
+        combinedResult[1]['skus'] = styleTwoSkus
+      }
       res.status(200).send(combinedResult)
       // res.status(200).send(result.rows)
     }  
