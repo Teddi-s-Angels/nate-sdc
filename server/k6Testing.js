@@ -3,7 +3,7 @@ import {sleep} from 'k6';
 
 export let options = {
   vus: 1000,
-  duration: '1m',
+  duration: '30s',
   rps: 1000,
   thresholds: {
     'failed requests': ['rate<0.1'], 
@@ -13,16 +13,16 @@ export let options = {
 
 // product and features route
 
-export default function () {
-  let id = Math.ceil(Math.random() * 10000000)
-  http.get(`http://127.0.0.1:3002/products/${id}`);
-}
+// export default function () {
+//   let id = Math.ceil(Math.random() * 10000000)
+//   http.get(`http://127.0.0.1:3002/products/${id}`);
+// }
 
 // product list route with limit
 
 // export default function () {
 //   let limit = Math.ceil(Math.random() * 100)
-//   http.get(`http://127.0.0.1:3002/products/list/${id}`);
+//   http.get(`http://127.0.0.1:3002/products/list/${limit}`);
 // }
 
 // product styles, photos, and skus route
@@ -41,7 +41,7 @@ export default function () {
 
 // user carts route
 
-// export default function () {
-//   let userSession = Math.ceil(Math.random() * 10000000)
-//   http.get(`http://127.0.0.1:3002/cart/${userSession}`);
-// }
+export default function () {
+  let userSession = Math.ceil(Math.random() * 10000000)
+  http.get(`http://127.0.0.1:3002/cart/${userSession}`);
+}

@@ -58,8 +58,6 @@ app.get('/products/:product_id/styles', (req, res) => {
       res.send(err)
     } else {
       result.rows.map((row) => {
-        console.log(row)
-        console.log('-')
         if(row.style_id === '1') {
           delete row.style_id
           styleOnePictures.push(row)
@@ -81,11 +79,10 @@ app.get('/products/:product_id/styles', (req, res) => {
       res.send(err)
     } else {
       result.rows.map((row) => {
-        console.log(row)
         if(row.style_id === 1) {
           delete row.style_id
           styleOneSkus[row.size] = row.quantity
-        } else if(row.style_id = 2) {
+        } else if(row.style_id === 2) {
           delete row.style_id
           styleTwoSkus[row.size] = row.quantity
         }
