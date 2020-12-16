@@ -1,9 +1,11 @@
 // server.jsx
+require('newrelic');
 const express = require('express');
 const app = express();
 const query = require("./queries");
 const PORT = 3002;
-require('newrelic');
+const bodyParser = require('body-parser')
+
 
 app.use(express.static('../client/dist')); // Host your dist folder up to the server
 app.use(express.json()); // Alternative to BodyParser
@@ -26,14 +28,15 @@ app.get('/products/:product_id', (req, res) => {
     if(err) {
       res.send(err)
     } else {
-      productResult = result.rows[0];
+      productResult = result['rows'][0];
+      productResult['features'] = [];
     }  
   })
   query.getOneProductsFeatures(id, (err, result) => {
     if(err) {
       res.send(err)
     } else {
-      productResult['features'] = result.rows
+      productResult['features'].push(result['rows'][0])
       res.status(200).send(productResult)
     } 
   })
@@ -50,8 +53,20 @@ app.get('/products/:product_id/styles', (req, res) => {
     if(err) {
       res.send(err)
     } else {
-      combinedResult = result.rows
+      combinedResult = result['rows']
+      console.log(combinedResult)
+      for(var i =0; i<combinedResult.length; i++) {
+        combinedResult[i]['style_id'] = i+=1
+      }
+    //   if(combinedResult.length === 1) {
+    //     combinedResult[0]['style_id'] = 1
+    //     console.log(combinedResult)
+    //   }
+    //   if (combinedResult[1] !== undefined)
+    //   combinedResult[0]['style_id'] = 1
+    //   combinedResult[1]['style_id'] = 2
     }  
+    console.log(combinedResult)
   })
   query.getProductStylePhotos(product_id, (err, result) => {
     if(err) {
@@ -61,15 +76,19 @@ app.get('/products/:product_id/styles', (req, res) => {
         if(row.style_id === '1') {
           delete row.style_id
           styleOnePictures.push(row)
-        } else if(row.style_id = '2') {
+        } else if(row.style_id === '2') {
           delete row.style_id
           styleTwoPictures.push(row)
         }
       })
       if(styleOnePictures) {
+        console.log(combinedResult)
+        combinedResult[0]['photos'] = [];
         combinedResult[0]['photos'] = styleOnePictures
       }
-      if(styleTwoPictures.length) {
+      if(styleTwoPictures.length > 0) {
+        console.log(combinedResult)
+        combinedResult[1]['photos'] = [];
         combinedResult[1]['photos'] = styleTwoPictures
       }
     }

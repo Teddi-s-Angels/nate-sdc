@@ -17,6 +17,7 @@ class ProductPictures extends React.Component {
         expandedHeight: 0
       }
     };
+    console.log(this.props.MAWstylesData[0].photos)
   }
   thumbnailClick(e) {
     e.preventDefault();
@@ -82,7 +83,8 @@ class ProductPictures extends React.Component {
     } else {
       leftChevron = null;
     }
-    if (this.state.selectedPicture !== (this.props.MAWstylesData.results[this.props.styleIndex].photos.length - 1)) {
+    console.log(this.props.MAWstylesData[0].photos)
+    if (this.state.selectedPicture !== (this.props.MAWstylesData[this.props.styleIndex].photos.length - 1)) {
       rightChevron = <div className="glyphicon glyphicon-chevron-right" style={{position: 'absolute', top: `150px`, right: '20px', width: '10px', height: '10px', zIndex: '2', color: 'white', textShadow: '-2px 0 black, 0 2px black, 2px 0 black, 0 -2px black', fontSize: '25px'}} onClick={(e)=>{this.rightClick(e)}}></div>
     } else {
       rightChevron = null;
@@ -90,10 +92,10 @@ class ProductPictures extends React.Component {
     var zoomedPicture;
     if (this.state.zoom === true) {
       zoomedPicture = <div>
-                        <img style={{position: 'absolute', top: '10px', left: '10px', maxWidth: '800px', maxHeight: '800px', zIndex: '3', cursor: 'zoom-out'}} src={this.props.MAWstylesData.results[this.props.styleIndex].photos[this.state.selectedPicture].url} onClick={(e)=>{this.zoomOut(e)}} onMouseMove={(e)=>{this.expandedViewXY(e)}}/>
+                        <img style={{position: 'absolute', top: '10px', left: '10px', maxWidth: '800px', maxHeight: '800px', zIndex: '3', cursor: 'zoom-out'}} src={this.props.MAWstylesData[this.props.styleIndex]['photos'][this.state.selectedPicture].url} onClick={(e)=>{this.zoomOut(e)}} onMouseMove={(e)=>{this.expandedViewXY(e)}}/>
                         <div style={{display: 'inline-block', position: 'fixed', top: `${this.state.expandedViewXY.hoverY - 30}px`, left: `${this.state.expandedViewXY.hoverX - 30}px`, width: '60px', height: '60px', zIndex: '4', border: '1px solid #d4d4d4', cursor: 'zoom-out'}} onClick={(e)=>{this.zoomOut(e)}} ></div>
                         <div style={{position: 'relative'}}>
-                          <div style={{display: 'inline-block', position: 'absolute', top: '-350px', right: '-475px', width: '300px', height: '300px', zIndex: '5', border: '1px solid #d4d4d4', backgroundImage: `url(${this.props.MAWstylesData.results[this.props.styleIndex].photos[this.state.selectedPicture].url})`, backgroundRepeat: 'no-repeat', backgroundSize: `${this.state.expandedViewXY.expandedWidth * 5}px + ${this.state.expandedViewXY.expandedHeight * 5}px`, backgroundPosition: `-${(this.state.expandedViewXY.offsetX - 60)*2}px -${(this.state.expandedViewXY.offsetY - 60)*2}px`}}></div>
+                          <div style={{display: 'inline-block', position: 'absolute', top: '-350px', right: '-475px', width: '300px', height: '300px', zIndex: '5', border: '1px solid #d4d4d4', backgroundImage: `url(${this.props.MAWstylesData[this.props.styleIndex].photos[this.state.selectedPicture].url})`, backgroundRepeat: 'no-repeat', backgroundSize: `${this.state.expandedViewXY.expandedWidth * 5}px + ${this.state.expandedViewXY.expandedHeight * 5}px`, backgroundPosition: `-${(this.state.expandedViewXY.offsetX - 60)*2}px -${(this.state.expandedViewXY.offsetY - 60)*2}px`}}></div>
                         </div>
                       </div>
     } else {
@@ -106,18 +108,18 @@ class ProductPictures extends React.Component {
     return (
       <div>
       <div className='text-center' style={{position: 'relative'}}>
-        <img className='img-fluid' style={{position: 'static', top: '0px', left: '0px', maxHeight: '500px', cursor: 'zoom-in'}} src={this.props.MAWstylesData.results[this.props.styleIndex].photos[this.state.selectedPicture].url} onClick={(e)=>{this.zoomIn(e)}}/>
-        {this.props.MAWstylesData.results[this.props.styleIndex].photos.map(picObj => {
-          let index = this.props.MAWstylesData.results[this.props.styleIndex].photos.indexOf(picObj);
+        <img className='img-fluid' style={{position: 'static', top: '0px', left: '0px', maxHeight: '500px', cursor: 'zoom-in'}} src={this.props.MAWstylesData[this.props.styleIndex].photos[this.state.selectedPicture].photo_url} onClick={(e)=>{this.zoomIn(e)}}/>
+        {this.props.MAWstylesData[this.props.styleIndex].photos.map(picObj => {
+          let index = this.props.MAWstylesData[this.props.styleIndex].photos.indexOf(picObj);
           let result;
           if (index > (6 + this.state.vertCarouselStartIndex) || index < this.state.vertCarouselStartIndex) {
             return;
           }
           let top = JSON.stringify(((index - this.state.vertCarouselStartIndex) * 50) + 20);
-            if (index > (5 + this.state.vertCarouselStartIndex) && index !== this.props.MAWstylesData.results[this.props.styleIndex].photos.length) {
+            if (index > (5 + this.state.vertCarouselStartIndex) && index !== this.props.MAWstylesData[this.props.styleIndex].photos.length) {
               return (
                 <div>
-                  <img className='border border-light' alt={index} style={{position: 'absolute', top: `${top}px`, left: '20px', width: '40px', height: '40px', zIndex: '2'}} src={this.props.MAWstylesData.results[this.props.styleIndex].photos[index].thumbnail_url} onClick={(e)=>{this.thumbnailClick(e)}}/>
+                  <img className='border border-light' alt={index} style={{position: 'absolute', top: `${top}px`, left: '20px', width: '40px', height: '40px', zIndex: '2'}} src={this.props.MAWstylesData[this.props.styleIndex].photos[index].thumbnail_url} onClick={(e)=>{this.thumbnailClick(e)}}/>
                   <div className="glyphicon glyphicon-chevron-down" style={{position: 'absolute', top: `${JSON.stringify(JSON.parse(top) + 43)}px`, left: '33px', width: '10px', height: '10px', zIndex: '2', color: 'white', textShadow: '-2px 0 black, 0 2px black, 2px 0 black, 0 -2px black'}} onClick={(e)=>{this.downClick(e)}}></div>
                 </div>
               )
@@ -125,20 +127,20 @@ class ProductPictures extends React.Component {
               return (
                 <div>
                   <div className="glyphicon glyphicon-chevron-up" style={{position: 'absolute', top: `3px`, left: '33px', width: '10px', height: '10px', zIndex: '2', color: 'white', textShadow: '-2px 0 black, 0 2px black, 2px 0 black, 0 -2px black'}} onClick={(e)=>{this.upClick(e)}}></div>
-                  <img className='border border-light' alt={index} style={{position: 'absolute', top: `${top}px`, left: '20px', width: '40px', height: '40px', zIndex: '2'}} src={this.props.MAWstylesData.results[this.props.styleIndex].photos[index].thumbnail_url} onClick={(e)=>{this.thumbnailClick(e)}}/>
+                  <img className='border border-light' alt={index} style={{position: 'absolute', top: `${top}px`, left: '20px', width: '40px', height: '40px', zIndex: '2'}} src={this.props.MAWstylesData[this.props.styleIndex].photos[index].thumbnail_url} onClick={(e)=>{this.thumbnailClick(e)}}/>
                 </div>
               )
             } else {
               return (
                 <div>
-                  <img className='border border-light' alt={index} style={{position: 'absolute', top: `${top}px`, left: '20px', width: '40px', height: '40px', zIndex: '2'}} src={this.props.MAWstylesData.results[this.props.styleIndex].photos[index].thumbnail_url} onClick={(e)=>{this.thumbnailClick(e)}}/>
+                  <img className='border border-light' alt={index} style={{position: 'absolute', top: `${top}px`, left: '20px', width: '40px', height: '40px', zIndex: '2'}} src={this.props.MAWstylesData[this.props.styleIndex].photos[index].thumbnail_url} onClick={(e)=>{this.thumbnailClick(e)}}/>
                 </div>
               )
             }
         })
         }
-        {this.props.MAWstylesData.results[this.props.styleIndex].photos.map((picObj) => {
-          let index = this.props.MAWstylesData.results[this.props.styleIndex].photos.indexOf(picObj);
+        {this.props.MAWstylesData[this.props.styleIndex].photos.map((picObj) => {
+          let index = this.props.MAWstylesData[this.props.styleIndex].photos.indexOf(picObj);
           if (index === JSON.parse(this.state.selectedPicture) && index >= this.state.vertCarouselStartIndex && index <= (this.state.vertCarouselStartIndex + 6)) {
             let top = JSON.stringify(((index - this.state.vertCarouselStartIndex) * 50) + 62);
             return (

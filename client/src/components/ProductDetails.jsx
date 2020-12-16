@@ -26,7 +26,7 @@ class ProductDetails extends React.Component {
   }
 
   changeSize(e) {
-    let sku = this.props.MAWstylesData.results[this.props.styleIndex].skus[e.target.value]
+    let sku = this.props.MAWstylesData[this.props.styleIndex].skus[e.target.value]
     let quantityArray = [];
     let maxQuantity = (sku < 15) ? sku : 15;
     for (let i = 1; i <= maxQuantity; i++) {
@@ -68,18 +68,18 @@ class ProductDetails extends React.Component {
       return <div>Loading...</div>
     } else {
       let original_price, sale_price;
-      if (this.props.MAWstylesData.results[this.props.styleIndex].sale_price > 0) {
-        original_price = <div style={{textDecorationLine: 'line-through'}}>${this.props.MAWstylesData.results[this.props.styleIndex].original_price} </div>
-        sale_price = <div className='ml-3' style={{color: 'red'}}> ${this.props.MAWstylesData.results[this.props.styleIndex].sale_price}</div>
+      if (this.props.MAWstylesData[this.props.styleIndex].sale_price > 0) {
+        original_price = <div style={{textDecorationLine: 'line-through'}}>${this.props.MAWstylesData[this.props.styleIndex].original_price} </div>
+        sale_price = <div className='ml-3' style={{color: 'red'}}> ${this.props.MAWstylesData[this.props.styleIndex].sale_price}</div>
       } else {
-        original_price = <div>${this.props.MAWstylesData.results[this.props.styleIndex].original_price}</div>
+        original_price = <div>${this.props.MAWstylesData[this.props.styleIndex].original_price}</div>
         sale_price = <div></div>
       }
 
-      let styleArray = this.props.MAWstylesData.results.map(styleObj => {
+      let styleArray = this.props.MAWstylesData.map(styleObj => {
           let borderStyle = {width: 60, height: 60, borderRadius: '30px', border: '2px solid black'};
-          let index = this.props.MAWstylesData.results.indexOf(styleObj)
-          if (this.props.styleIndex === this.props.MAWstylesData.results.indexOf(styleObj)) {
+          let index = this.props.MAWstylesData.indexOf(styleObj)
+          if (this.props.styleIndex === this.props.MAWstylesData.indexOf(styleObj)) {
             borderStyle = {width: 60, height: 60, borderRadius: '30px', border: '2px solid green'};
           };
           return <img className='mt-2 mb-2 mr-2' alt={index} style={borderStyle} src={styleObj.photos[0].thumbnail_url} onClick={(e)=>this.changeStyleIndex(e)}/>
@@ -108,10 +108,10 @@ class ProductDetails extends React.Component {
 
       let mappedStyleThumbnails = <div><div>{firstThumbnail}{secondThumbnail}{thirdThumbnail}{fourthThumbnail}</div><div>{fifthThumbnail}{sixthThumbnail}{seventhThumbnail}{eigthThumbnail}</div><div>{ninethThumbnail}{tenthThumbnail}{eleventhThumbnail}{twelvthThumbnail}</div><div>{thirteenthThumbnail}{fourteenthThumbnail}{fifteenthThumbnail}{sixteenthThumbnail}</div><div>{seventeethThumbnail}{eighteenthThumbnail}{nineteethThumbnail}{twentiethThumbnail}</div></div>
 
-      let sizesSelector = (Object.keys(this.props.MAWstylesData.results[this.props.styleIndex].skus)[0] !== 'null') ?
+      let sizesSelector = (Object.keys(this.props.MAWstylesData[this.props.styleIndex].skus)[0] !== 'null') ?
         (<select className='mr-3' onChange={(e)=>this.changeSize(e)} value={this.state.selectedSize}>
           <option>Select Size</option>
-          {Object.keys(this.props.MAWstylesData.results[this.props.styleIndex].skus).map(size => {
+          {Object.keys(this.props.MAWstylesData[this.props.styleIndex].skus).map(size => {
           return <option value={size}>{size}</option>
         })}
         </select>) :
@@ -146,7 +146,7 @@ class ProductDetails extends React.Component {
         <div>
           <StarRatings rating={this.props.MAWavgRating} starRatedColor='black' numberOfStars={5} name='rating' starDimension="20px" starSpacing="2px"/>
           <div>Category: {this.props.MAWproductData.category}</div>
-          <h2>{this.props.MAWproductData.name}</h2>
+          <h2>{this.props.MAWproductData.product_name}</h2>
           <Container>
             <Row>
               {original_price}
@@ -154,7 +154,7 @@ class ProductDetails extends React.Component {
             </Row>
           </Container>
             <div>
-              <div><b>Style: </b>{this.props.MAWstylesData.results[this.props.styleIndex].name}</div>
+              <div><b>Style: </b>{this.props.MAWstylesData[this.props.styleIndex].style_name}</div>
             </div>
           <Container>
             <Row>
@@ -172,26 +172,26 @@ class ProductDetails extends React.Component {
             <Row className='mt-3 mb-3'>
               <FacebookShareButton
                 url={"http://18.219.69.17/5"}
-                quote={`${this.props.MAWstylesData.results[this.props.styleIndex].name}`}
+                quote={`${this.props.MAWstylesData[this.props.styleIndex].name}`}
                 hashtag="#nKingsStyle">
                  <FacebookIcon size={36} />
               </FacebookShareButton>
               <TwitterShareButton
                 url={"http://18.219.69.17/5"}
-                title={`${this.props.MAWstylesData.results[this.props.styleIndex].name}`}
+                title={`${this.props.MAWstylesData[this.props.styleIndex].name}`}
                 via='nKings'
                 hashtags={["#nKingsStyle"]}>
                   <TwitterIcon size={36} />
               </TwitterShareButton>
               <PinterestShareButton
                 url={"http://18.219.69.17/5"}
-                media={`${this.props.MAWstylesData.results[this.props.styleIndex].photos[0].url}`}
-                description={`${this.props.MAWstylesData.results[this.props.styleIndex].name}`}>
+                media={`${this.props.MAWstylesData[this.props.styleIndex].photos[0].url}`}
+                description={`${this.props.MAWstylesData[this.props.styleIndex].name}`}>
                   <PinterestIcon size={36} />
               </PinterestShareButton>
               <EmailShareButton
                 url={"http://18.219.69.17/5"}
-                subject={`${this.props.MAWstylesData.results[this.props.styleIndex].name}`}
+                subject={`${this.props.MAWstylesData[this.props.styleIndex].name}`}
                 body='Buy this product!'>
                   <EmailIcon size={36} />
               </EmailShareButton>

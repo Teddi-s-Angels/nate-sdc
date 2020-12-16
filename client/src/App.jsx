@@ -7,6 +7,7 @@ import ProductFactoids from './components/ProductFactoids.jsx';
 import Header from './components/Header.jsx';
 import StarRatings from 'react-star-ratings';
 import { Button, Col, Container, Form, Row } from 'react-bootstrap';
+import axios from 'axios'
 
 class ProductOverview extends React.Component {
     constructor() {
@@ -26,25 +27,28 @@ class ProductOverview extends React.Component {
     }
 
     getProductData(id) {
-        fetch(`http://52.26.193.201:3000/products/${id}`)
+        axios.get(`/products/${id}`)
             .then(data => {
-            return data.json();
+                console.log(data.data)
+            return data.data;
             })
             .then(data => {
                 this.setState({MAWproductData: data})
             })
             .then(() => {
-                fetch(`http://52.26.193.201:3000/products/${id}/styles`)
+                axios.get(`/products/${id}/styles`)
                 .then(data => {
-                    return data.json();
+                    console.log(data.data)
+                    return data.data;
                 })
                 .then(data => {
                     this.setState({MAWstylesData: data})
                 })
                 .then(() => {
-                    fetch(`http://52.26.193.201:3000/reviews/${id}/meta`)
+                    axios.get(`/reviews/${id}/meta`)
                     .then(data => {
-                        return data.json();
+                        console.log(data.data)
+                        return data.data;
                     })
                     .then(data => {
                         //Calculating Avg Rating from reviews
@@ -56,7 +60,7 @@ class ProductOverview extends React.Component {
                         }
                         if(numOfRatings !== 0) {
                         return (totalStars / numOfRatings);
-                        } else {
+                        } else {ß
                         return 0;
                         }
                     })
